@@ -1,5 +1,6 @@
 import pygame
-import sys
+from sys import exit
+from random import choice
 
 # Inicialização do Pygame
 pygame.init()
@@ -15,7 +16,16 @@ cor_branca = (255, 255, 255)
 
 # Configuração da tela
 tela = pygame.display.set_mode((largura, altura))
-pygame.display.set_caption("Pong")
+pygame.display.set_caption("PyPong")
+
+# Carrega o plano de fundo
+plano_fundo = []
+for imagem in range(1, 9):
+    img = pygame.image.load(f'imagens/nature_{imagem}/orig.png').convert_alpha()
+    plano_fundo.append(img)
+
+# Transforma o tamanho da imagem de fundo
+plano_fundo = pygame.surface.Surface(plano_fundo, (800, 600))
 
 # Posições iniciais das raquetes e da bola
 raquete_esquerda = pygame.Rect(50, altura // 2 - tamanho_raquete // 2, 20, tamanho_raquete)
@@ -58,10 +68,14 @@ while True:
 
     # Verifica se a bola saiu da tela (ponto marcado)
     if bola.left <= 0 or bola.right >= largura:
+
         # Reinicia a posição da bola
         bola.x = largura // 2 - tamanho_bola // 2
         bola.y = altura // 2 - tamanho_bola // 2
         velocidade_x = -velocidade_x
+
+    # Desenha o fundo na tela
+    tela.blit(plano_fundo, (0, 0))
 
     # Preenche a tela com a cor de fundo
     tela.fill((0, 0, 0))
