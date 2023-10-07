@@ -1,6 +1,6 @@
 import pygame
 from sys import exit
-from random import randint, choice
+from random import choice
 
 # Inicialização do Pygame
 pygame.init()
@@ -17,18 +17,26 @@ velocidade_bola = 5
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("PyPong")
 
-## Carrega o plano de fundo
+# Carrega o plano de fundo
 plano_fundo = []
 for imagem in range(1, 9):
     img = pygame.image.load(f'imagens/inteiro/origbig{imagem}.png').convert_alpha()
     img = pygame.transform.scale(img, (800, 600))
     plano_fundo.append(img)
 
-# Carrega 1 fundo 
+# Seleciona um fundo aleatorio 
 papel_parede_aleatorio = choice(plano_fundo)
 
+# Imagem da raquete
+raquete = []
+for imagem in range(1, 6):
+    img = pygame.image.load(f'barras/{imagem}.png').convert_alpha()
+    img = pygame.transform.scale(img, (100, 100))
+    raquete.append(img)
 
-# Posições iniciais das raquetes e da bola
+# Seleciona uma raquete aleatoria
+raquete_esquerda = choice(raquete)
+raquete_direita = choice(raquete)
 raquete_esquerda = pygame.Rect(50, altura // 2 - tamanho_raquete // 2, 20, tamanho_raquete)
 raquete_direita = pygame.Rect(largura - 50 - 20, altura // 2 - tamanho_raquete // 2, 20, tamanho_raquete)
 bola = pygame.Rect(largura // 2 - tamanho_bola // 2, altura // 2 - tamanho_bola // 2, tamanho_bola, tamanho_bola)
@@ -79,8 +87,9 @@ while True:
         velocidade_x = -velocidade_x
 
     # Desenha as raquetes e a bola
+    #tela.blit(raquete_direita, (10, 50))
+    #tela.blit(raquete_esquerda, (20,100))
     tela.blit(papel_parede_aleatorio, (0, 0))
-    
     pygame.draw.rect(tela, 'red', raquete_esquerda)
     pygame.draw.rect(tela, 'blue', raquete_direita)
     pygame.draw.ellipse(tela, 'white', bola)
