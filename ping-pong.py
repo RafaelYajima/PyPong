@@ -1,6 +1,6 @@
 import pygame
 from sys import exit
-from random import choice
+from random import randint, choice
 
 # Inicialização do Pygame
 pygame.init()
@@ -12,20 +12,21 @@ tamanho_raquete = 100
 tamanho_bola = 20
 velocidade_raquete = 10
 velocidade_bola = 5
-cor_branca = (255, 255, 255)
 
 # Configuração da tela
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("PyPong")
 
-# Carrega o plano de fundo
+## Carrega o plano de fundo
 plano_fundo = []
 for imagem in range(1, 9):
-    img = pygame.image.load(f'imagens/nature_{imagem}/orig.png').convert_alpha()
+    img = pygame.image.load(f'imagens/inteiro/origbig{imagem}.png').convert_alpha()
+    img = pygame.transform.scale(img, (800, 600))
     plano_fundo.append(img)
 
-# Transforma o tamanho da imagem de fundo
-plano_fundo = pygame.surface.Surface(plano_fundo, (800, 600))
+# Carrega 1 fundo 
+papel_parede_aleatorio = choice(plano_fundo)
+
 
 # Posições iniciais das raquetes e da bola
 raquete_esquerda = pygame.Rect(50, altura // 2 - tamanho_raquete // 2, 20, tamanho_raquete)
@@ -41,7 +42,7 @@ while True:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            exit()
 
     # Movimentação das raquetes
     teclas = pygame.key.get_pressed()
@@ -53,6 +54,9 @@ while True:
         raquete_direita.y -= velocidade_raquete
     if teclas[pygame.K_DOWN] and raquete_direita.bottom < altura:
         raquete_direita.y += velocidade_raquete
+    if teclas[pygame.K_ESCAPE]:
+        pygame.quit()
+        exit()
 
     # Movimentação da bola
     bola.x += velocidade_x
@@ -74,16 +78,12 @@ while True:
         bola.y = altura // 2 - tamanho_bola // 2
         velocidade_x = -velocidade_x
 
-    # Desenha o fundo na tela
-    tela.blit(plano_fundo, (0, 0))
-
-    # Preenche a tela com a cor de fundo
-    tela.fill((0, 0, 0))
-
     # Desenha as raquetes e a bola
-    pygame.draw.rect(tela, cor_branca, raquete_esquerda)
-    pygame.draw.rect(tela, cor_branca, raquete_direita)
-    pygame.draw.ellipse(tela, cor_branca, bola)
+    tela.blit(papel_parede_aleatorio, (0, 0))
+    
+    pygame.draw.rect(tela, 'red', raquete_esquerda)
+    pygame.draw.rect(tela, 'blue', raquete_direita)
+    pygame.draw.ellipse(tela, 'white', bola)
 
     # Atualiza a tela
     pygame.display.flip()
