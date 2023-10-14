@@ -19,7 +19,7 @@ pygame.init()
 largura = 800
 altura = 600
 tamanho_bola = 20
-velocidade_raquete = 10
+velocidade_raquete = 8
 velocidade_inicial = 5
 
 # Configuração da tela
@@ -57,7 +57,7 @@ fonte_pixel = pygame.font.Font('font/Pixeltype.ttf', 50)
 
 # Velocidades iniciais da bola
 velocidade_x = velocidade_inicial
-velocidade_y = 0
+velocidade_y = 3
 
 #informaçao do placar
 p1 = 0
