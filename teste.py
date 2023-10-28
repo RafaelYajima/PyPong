@@ -1,6 +1,9 @@
 import pygame
 from sys import exit
-from random import choice
+from random import choice, randint
+
+def aleatorio():
+    randint(-5,5)
 
 def mostra_textos():
     global p1, p2
@@ -19,8 +22,8 @@ pygame.init()
 largura = 800
 altura = 600
 tamanho_bola = 20
-velocidade_raquete = 8
-velocidade_inicial = 5
+velocidade_raquete = 10
+velocidade_bola = 10
 
 # Configuração da tela
 tela = pygame.display.set_mode((largura, altura))
@@ -47,8 +50,8 @@ for imagem in range(1, 6):
 raquete_esquerda = choice(raquete)
 raquete_direita = choice(raquete)
 
-raquete_esquerda_rect = raquete_esquerda.get_rect(center=(70, 300))
-raquete_direita_rect = raquete_direita.get_rect(center=(720, 300))
+raquete_esquerda_rect = raquete_esquerda.get_rect(center=(70, 280))
+raquete_direita_rect = raquete_direita.get_rect(center=(720, 280))
 
 bola = pygame.Rect(largura // 2 - tamanho_bola // 2, altura // 2 - tamanho_bola // 2, tamanho_bola, tamanho_bola)
 
@@ -56,8 +59,8 @@ bola = pygame.Rect(largura // 2 - tamanho_bola // 2, altura // 2 - tamanho_bola 
 fonte_pixel = pygame.font.Font('font/Pixeltype.ttf', 50)
 
 # Velocidades iniciais da bola
-velocidade_x = velocidade_inicial
-velocidade_y = 3
+velocidade_x = velocidade_bola
+velocidade_y = 0
 
 #informaçao do placar
 p1 = 0
@@ -88,29 +91,39 @@ while True:
     bola.x += velocidade_x
     bola.y += velocidade_y
 
-    # Verifica colisões com a base e o teto
+    # Verifica colisões com as bordas
     if bola.top <= 0 or bola.bottom >= altura:
         velocidade_y = -velocidade_y
 
-    # Verifica a direçao da bola
-    if bola.colliderect(raquete_direita_rect):
-        velocidade_x = -5
-    if bola.colliderect(raquete_esquerda_rect):
-        velocidade_x = +5
-
-    # Verifica colisões com as paredes
-    if bola.left < 70:
+    # Verifica colisões com as raquetes
+    if bola.left <= 70:
         p2 += 1
         bola.x = largura // 2 - tamanho_bola // 2
         bola.y = altura // 2 - tamanho_bola // 2
         velocidade_x = -velocidade_x
-        velocidade_y = 0
-    if bola.right > 730:
+    if bola.right >= 730:
         p1 += 1
         bola.x = largura // 2 - tamanho_bola // 2
         bola.y = altura // 2 - tamanho_bola // 2
         velocidade_x = -velocidade_x
-        velocidade_y = 0
+
+    if bola.colliderect(raquete_direita_rect) or bola.colliderect(raquete_esquerda_rect):
+        velocidade_x = -velocidade_x
+        velocidade_y = randint(-6,6)
+
+    if p1 == 3:
+        print("================================================================")
+        print("================= Jogador 1 é o Vendedor!!! ====================")
+        print("================================================================")
+
+        pygame.quit()
+        exit()
+    elif p2 == 3:
+        print("================================================================")
+        print("================= Jogador 2 é o Vendedor!!! ====================")
+        print("================================================================")
+        pygame.quit()
+        exit()
         
     # Desenha o plano de fundo
     tela.blit(papel_parede_aleatorio, (0, 0))
